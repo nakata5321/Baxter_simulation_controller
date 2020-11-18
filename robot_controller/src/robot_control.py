@@ -32,7 +32,7 @@ face_publisher.publish(face_msg)
 # end of activation
 
 # waiting for a job
-program = '/home/nakata/robot_ws/' + '/robonomics io read launch'
+program = '/home/$USER/robot_ws/' + 'robonomics io read launch'
 rob_read = subprocess.Popen(program, shell=True, stdout=subprocess.PIPE)
 while True:
     try:
@@ -129,8 +129,8 @@ rospy.loginfo("Pushed, the IPFS hash is " + res.values()[0].encode('utf8'))
 #push to robonomics
 rospy.loginfo("Push hash to robonomics")
 for r in hash_result:
-    print("echo \"" + r + "\" | " + '/home/nakata/robot_ws/' + "robonomics io write datalog -s " + my_private_key)
-    program = "echo \"" + r + "\" | " + '/home/nakata/robot_ws/' + "robonomics io write datalog -s " + my_private_key
+    print("echo \"" + r + "\" | " + '/home/$USER/robot_ws/' + "robonomics io write datalog -s " + my_private_key)
+    program = "echo \"" + r + "\" | " + '/home/$USER/robot_ws/' + "robonomics io write datalog -s " + my_private_key
     process = subprocess.Popen(program, shell=True, stdout=subprocess.PIPE)
     rospy.sleep(4)
 rospy.loginfo("Job finished")
