@@ -20,18 +20,19 @@ pip install ipfshttpclient
 ## 1. Download simulation and controller packages
 Download packages:
 ```sh
+cd ~
 mkdir -p robot_ws/src
-cd robot_ws/src
 git clone https://github.com/nakata5321/Baxter_simulation_controller.git
-mv Baxter_simulation_controller/* ./
-rm -rf Baxter_simulation_controller/
+cd robot_ws/src
+ln -s ~/Baxter_simulation_controller/ .
 cd ..
 catkin build
 ```
 Dont forget to add source command:
 ```sh
 echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
-```
+```  
+At the end save *Robonomics node (binary file)* in **robot_ws** directory.
 
 ## 2. Start simulation
 Let's start gazebo world and put our baxter in it:
@@ -65,7 +66,8 @@ Go to [https://parachain.robonomics.network][db5] and switch to local node
 
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
-__Important!__ Copy each account's key and address (to copy address click on account's icon). Transfer some money (units) to these accounts:
+__Important!__ Copy each account's key and address (to copy address click on account's icon).You should change value from **Mnemonic** to **Raw seed** in second raw. It will be the private key for account.
+Transfer some money (units) to these accounts:
 
 ![create account][im5]
 ![accounts][im6]
@@ -87,9 +89,9 @@ rosrun robot_controller robot_control.py
 
 Return to the first terminal, open new window and send command to [**robonomics io**][db6]. This command will turn ON your robot:
 ```sh
-echo "ON" | ./robonomics io write launch -r <CURIOSITY ADDRESS> -s <EMPLOYER’S KEY>
+echo "ON" | ./robonomics io write launch -r <BAXTER ADDRESS> -s <EMPLOYER’S KEY>
 ```
-Where *<CURIOSITY ADDRESS>* and *<EMPLOYER’S KEY>* are replaced with previously saved strings accordingly
+Where *<BAXTER ADDRESS>* and *<EMPLOYER’S KEY>* are replaced with previously saved strings accordingly
 
 ![rob_message][im8]
 
