@@ -1,0 +1,20 @@
+--- qnode_old.hpp	2020-11-18 18:33:10.537623863 +0300
++++ qnode.hpp	2020-11-18 16:17:27.468386000 +0300
+@@ -34,12 +34,15 @@
+ #ifndef baxter_sim_io_QNODE_HPP_
+ #define baxter_sim_io_QNODE_HPP_
+ 
++#ifndef Q_MOC_RUN
+ #include <ros/ros.h>
++#include <baxter_core_msgs/NavigatorState.h>
++#include <baxter_core_msgs/DigitalIOState.h>
++#endif
++
+ #include <string>
+ #include <QThread>
+ #include <QStringListModel>
+-#include <baxter_core_msgs/NavigatorState.h>
+-#include <baxter_core_msgs/DigitalIOState.h>
+ 
+ namespace baxter_sim_io {
+ 
