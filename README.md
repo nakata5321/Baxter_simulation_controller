@@ -7,9 +7,14 @@ Example of how it works is available on [YouTube.][db1]
  - ROS Melodic + Gazebo (installation manual [here][db2])  
  - extra packages:
 ```sh
-sudo apt-get install ros-melodic-gazebo-ros-control ros-melodic-effort-controllers ros-melodic-joint-state-controller
+sudo apt-get install ros-melodic-qt-build ros-melodic-driver-common ros-melodic-gazebo-ros-control ros-melodic-gazebo-ros-pkgs ros-melodic-ros-control ros-melodic-control-toolbox ros-melodic-realtime-tools ros-melodic-ros-controllers ros-melodic-xacro python-wstool ros-melodic-tf-conversions ros-melodic-kdl-parser python-wstool python-catkin-tools qt4-default
 ```
 - IPFS 0.4.22 (download from [here][db3] and install)
+- pip:
+```sh
+sudo apt install python-pip
+```
+
 - ipfshttpclient:
 ```sh
 pip install ipfshttpclient
@@ -22,9 +27,20 @@ Download packages:
 ```sh
 cd ~
 mkdir -p robot_ws/src
+cd robot_ws/src/
+wstool init .
+wstool merge https://raw.githubusercontent.com/RethinkRobotics/baxter_simulator/master/baxter_simulator.rosinstall
+wstool update
 git clone https://github.com/nakata5321/Baxter_simulation_controller.git
-cd robot_ws/src
-ln -s ~/Baxter_simulation_controller/ .
+```
+This packages were created for ROS indigo. We have to change some files to run them on ROS melodic.
+We will use **patch** files.
+```sh
+patch ./baxter_simulator/baxter_sim_io/include/baxter_sim_io/qnode.hpp ./Baxter_simulation_controller/patch/qnode_patch
+patch ./baxter_simulator/baxter_sim_kinematics/src/arm_kinematics.cpp ./Baxter_simulation_controller/patch/arm_patch
+```
+And let's build  all our packages:
+```sh
 cd ..
 catkin build
 ```
@@ -35,15 +51,19 @@ echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
 At the end save *Robonomics node (binary file)* in **robot_ws** directory.
 
 ## 2. Start simulation
-Let's start gazebo world and put our baxter in it:
+### Let's start our simulation:
+At first copy and edit baxter.sh
 ```sh
-roslaunch gazebo_ros empty_world.launch
+cp src/baxter/baxter.sh .
 ```
-![empty world][im1]
-
-Open one more window in terminal:
+Edit the following values in `baxter.sh` :
+- your_ip value - put your local ip address
+- ros_version
+    
+Run the baxter shell script with sim specified:
 ```sh
-rosrun gazebo_ros spawn_model -file `rospack find baxter_description`/urdf/baxter.urdf -urdf -z 1 -model baxter
+./baxter.sh sim
+roslaunch baxter_gazebo baxter_world.launch
 ```
 You can put some models in front of our baxter. It will be more intresting.
 ![baxter][im2]
@@ -72,7 +92,7 @@ Transfer some money (units) to these accounts:
 ![create account][im5]
 ![accounts][im6]
 
-Add Baxter's secret key and adress to `configuration.txt` in `robot_ws/src/robot_controller/src/`
+Add Baxter's secret key and adress to `configuration.txt` in `robot_ws/src/Baxter_simulation_controller/src/`
 
 ## 4.Start simulation
 
@@ -91,7 +111,7 @@ Return to the first terminal, open new window and send command to [**robonomics 
 ```sh
 echo "ON" | ./robonomics io write launch -r <BAXTER ADDRESS> -s <EMPLOYER’S KEY>
 ```
-Where *<BAXTER ADDRESS>* and *<EMPLOYER’S KEY>* are replaced with previously saved strings accordingly
+Where `<BAXTER ADDRESS>`  and `<EMPLOYER’S KEY>` are replaced with previously saved strings accordingly.
 
 ![rob_message][im8]
 
@@ -103,11 +123,12 @@ when the work is over go to the Robonomics Portal to `Developer > Chain state`. 
 
 ![datalog][im10]
 
-Now the IPFS hash of the telemetry and photos is saved in the blockchain. To see the data simply copy the hash and insert it in IPFS Companion:
+Now the IPFS hash of the telemetry and photos is saved in the blockchain. To see the data simply copy the hash and insert it in the search bar with URL:  
+#### gateway.ipfs.io/ipfs/<put your hash here>
 
-![ipfs][im11]
 
-Click  __View on Gateway__ and that's all!
+
+That's all!
 
 ![result1][im12]
 ![result2][im13]
