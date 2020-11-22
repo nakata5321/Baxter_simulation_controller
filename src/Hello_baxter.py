@@ -14,7 +14,7 @@ def hello_baxter():
 
     baxter_interface.RobotEnable().enable()
 
-    print("Moving to neutral pose...")
+    rospy.loginfo("Moving to neutral pose...")
     left_arm.move_to_neutral()
     right_arm.move_to_neutral()
 
@@ -27,6 +27,7 @@ def hello_baxter():
     left_wave_2 = {'left_s0': -0.395, 'left_s1': -0.202, 'left_e0': 1.831, 'left_e1': 1.981, 'left_w0': -1.979, 'left_w1': -1.100, 'left_w2': -0.448}
 
     # wave three times
+    rospy.loginfo("Hello")
     for _move in range(2):
          left_arm.move_to_joint_positions(left_wave_1)
          right_arm.move_to_joint_positions(right_wave_1)

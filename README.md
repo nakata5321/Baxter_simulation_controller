@@ -59,7 +59,7 @@ cp src/baxter/baxter.sh .
 Edit the following values in `baxter.sh` :
 - your_ip value - put your local ip address
 - ros_version
-    
+
 Run the baxter shell script with sim specified:
 ```sh
 ./baxter.sh sim
@@ -86,13 +86,15 @@ Go to [https://parachain.robonomics.network][db5] and switch to local node
 
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
+You can find The manual "Create an Account on Robonomics Portal" [here][db6]
+
 __Important!__ Copy each account's key and address (to copy address click on account's icon).You should change value from **Mnemonic** to **Raw seed** in second raw. It will be the private key for account.
 Transfer some money (units) to these accounts:
 
 ![create account][im5]
 ![accounts][im6]
 
-Add Baxter's secret key and adress to `configuration.txt` in `robot_ws/src/Baxter_simulation_controller/src/`
+Add Baxter's secret key and adress to `config.yaml` in `robot_ws/src/Baxter_simulation_controller/config/`
 
 ## 4.Start simulation
 
@@ -133,7 +135,7 @@ That's all!
 ![result1][im12]
 ![result2][im13]
 
-[db1]: <https://youtu.be/AeufQmaNRWk>
+[db1]: <https://youtu.be/2AQGFVzkGdg>
 [db2]: <http://wiki.ros.org/melodic/Installation>
 [db3]: <https://dist.ipfs.io/go-ipfs/v0.4.22/go-ipfs_v0.4.22_linux-386.tar.gz>
 [db4]: <https://github.com/airalab/robonomics/releases>
@@ -152,3 +154,4 @@ That's all!
 [im11]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/ipfs.jpg>
 [im12]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result1.jpg>
 [im13]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result2.jpg>
+[db6]: <https://wiki.robonomics.network/docs/create-accounts-in-dapp/>

@@ -4,6 +4,7 @@ import ipfshttpclient
 import subprocess
 import rospy
 import time
+import yaml
 import cv2
 import os
 from sensor_msgs.msg import LaserScan
@@ -18,11 +19,23 @@ rospy.init_node('robot_control', anonymous=False)
 rospy.loginfo("Activation")
 br = CvBridge()
 dirname = os.path.dirname(__file__)
-path = dirname + "/configuration.txt"
-conf = open(path, 'r')
-my_private_key = conf.readline()
-my_adress = conf.readline()
-conf.close()
+
+#dowload Configuration
+config_path = dirname + "../config/config.yaml"
+try:
+    with open(config_path) as f:
+        content = f.read()
+        config = json.loads(content)
+        rospy.logdebug(f"Configuration dict: {content}")
+        print(config)
+        my_private_key = config["key"]
+        my_adress = config["address"]
+except Exception as e:
+    while True:
+        rospy.logerr("Configuration file is broken or not readable!")
+        rospy.logerr(e)
+        rospy.sleep(5)
+
 
 face_publisher = rospy.Publisher('/robot/xdisplay', Image, queue_size=1)
 sad_picture = dirname + "/sad_face.png"
@@ -96,11 +109,8 @@ def listener():
 
 publish = Thread(target = listener)
 working = Thread(target = Hello_baxter.hello_baxter)
-print('1')
 publish.start()
-print('2')
 working.start()
-print('3')
 working.join()
 #rospy.sleep(7)
 stop_publish = True
