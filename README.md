@@ -22,17 +22,19 @@ Download packages:
 ```sh
 cd ~
 mkdir -p robot_ws/src
-git clone https://github.com/nakata5321/Baxter_simulation_controller.git
 cd robot_ws/src
-ln -s ~/Baxter_simulation_controller/ .
-cd ..
+git clone https://github.com/nakata5321/Baxter_simulation_controller.git
+cd Baxter_simulation_controller
+git checkout old_version
+cd ../..
 catkin build
 ```
 Dont forget to add source command:
 ```sh
 echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 ```  
-At the end save *Robonomics node (binary file)* in **robot_ws** directory.
+__Important!__ At the end save *Robonomics node (binary file)* in **robot_ws** directory.
 
 ## 2. Start simulation
 Let's start gazebo world and put our baxter in it:
