@@ -21,11 +21,11 @@ br = CvBridge()
 dirname = os.path.dirname(__file__)
 
 #dowload Configuration
-config_path = dirname + "../config/config.yaml"
+config_path = dirname + "/../config/config.yaml"
 try:
     with open(config_path) as f:
         content = f.read()
-        config = json.loads(content)
+        config = yaml.load(content)
         rospy.logdebug(f"Configuration dict: {content}")
         print(config)
         my_private_key = config["key"]

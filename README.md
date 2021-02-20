@@ -20,6 +20,8 @@ sudo apt install python-pip
 pip install ipfshttpclient
 ```
  - Robonomics node (binary file) (download latest [release][db4] here)
+ - Create __Baxter__ and __Employer__ accounts  on **Robonomics Portal**  
+ (you can find tutorial ["Create an Account on Robonomics Portal"][db8] here).
  - IPFS browser extension (not necessary)
 
 ## 1. Download simulation and controller packages
@@ -48,7 +50,7 @@ Dont forget to add source command:
 ```sh
 echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
 ```  
-At the end save *Robonomics node (binary file)* in **robot_ws** directory.
+__Important!__ At the end save *Robonomics node (binary file)* in **robot_ws** directory.
 
 ## 2. Start simulation
 ### Let's start our simulation:
@@ -56,9 +58,21 @@ At first copy and edit baxter.sh
 ```sh
 cp src/baxter/baxter.sh .
 ```
+Find your local ip adress with command:
+```
+ip a
+```
+![ip_a][im14]
+
 Edit the following values in `baxter.sh` :
-- your_ip value - put your local ip address
-- ros_version
+```
+nano baxter.sh
+```
+
+- your_ip - put your local ip address. See `ip a`
+- ros_version - for example "melodic"
+
+![baxtersh][im15]
 
 Run the baxter shell script with sim specified:
 ```sh
@@ -86,9 +100,10 @@ Go to [https://parachain.robonomics.network][db5] and switch to local node
 
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
-You can find The manual "Create an Account on Robonomics Portal" [here][db6]
+You can find The manual "Create an Account on Robonomics Portal" [here][db8]
 
-__Important!__ Copy each account's key and address (to copy address click on account's icon).You should change value from **Mnemonic** to **Raw seed** in second raw. It will be the private key for account.
+__Important!__ Copy each account's key and address (to copy address click on account's icon). Also you should change value from **Mnemonic** to **Raw seed** in second raw. It will be the private key for account. **Save these Raws seed in secure place!**          
+
 Transfer some money (units) to these accounts:
 
 ![create account][im5]
@@ -154,4 +169,6 @@ That's all!
 [im11]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/ipfs.jpg>
 [im12]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result1.jpg>
 [im13]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result2.jpg>
-[db6]: <https://wiki.robonomics.network/docs/create-accounts-in-dapp/>
+[im14]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/ip_a.png>
+[im15]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/baxter_sh.jpg>
+[db8]: <https://wiki.robonomics.network/docs/create-account-in-dapp/>
