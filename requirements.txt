@@ -1,0 +1,6 @@
+ipfshttpclient==0.7.0
+substrate_interface==0.13.9
+pyyaml
+opencv-python
+rospkg
+packaging

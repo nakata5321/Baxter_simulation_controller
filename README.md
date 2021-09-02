@@ -7,12 +7,12 @@ Example of how it works is available on [YouTube.][db1]
  - ROS Melodic + Gazebo (installation manual [here][db2])  
  - extra packages:
 ```sh
-sudo apt-get install ros-melodic-gazebo-ros-control ros-melodic-effort-controllers ros-melodic-joint-state-controller
+sudo apt-get install ros-melodic-gazebo-ros-control ros-melodic-effort-controllers ros-melodic-joint-state-controller python3-rospkg rosbash
 ```
-- IPFS 0.4.22 (download from [here][db3] and install)
-- ipfshttpclient:
+- IPFS up to 0.6.0 (download from [here][db3] and install)
+- python packages:
 ```sh
-pip install ipfshttpclient
+pip3 install -r requirements.txt
 ```
  - Robonomics node (binary file) (download latest [release][db4] here)
  - IPFS browser extension (not necessary)
@@ -27,14 +27,13 @@ git clone https://github.com/nakata5321/Baxter_simulation_controller.git
 cd Baxter_simulation_controller
 git checkout old_version
 cd ../..
-catkin build
+catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3
 ```
 Dont forget to add source command:
 ```sh
 echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-```  
-__Important!__ At the end save *Robonomics node (binary file)* in **robot_ws** directory.
+```
 
 ## 2. Start simulation
 Let's start gazebo world and put our baxter in it:
@@ -48,22 +47,20 @@ Open one more window in terminal:
 rosrun gazebo_ros spawn_model -file `rospack find baxter_description`/urdf/baxter.urdf -urdf -z 1 -model baxter
 ```
 You can put some models in front of our baxter. It will be more intresting.
+
 ![baxter][im2]
 
 ## 3.Manage accounts in DAPP
 
 Since we are testing, let us create a local robonomics network with robonomics binary file. Go to folder with robonomics file and run:
 ```sh
-./robonomics --dev --rpc-cors all
+./robonomics --dev --tmp --rpc-cors all
 ```
 ![robonomics][im3]
 
-Don't forget to remove `db` folder after every launch:
-```sh
-rm -rf /home/$USER/.local/share/robonomics/chains/dev/db
-```
 
 Go to [https://parachain.robonomics.network][db5] and switch to local node
+
 ![local node][im4]
 
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
@@ -74,7 +71,7 @@ Transfer some money (units) to these accounts:
 ![create account][im5]
 ![accounts][im6]
 
-Add Baxter's secret key and adress to `configuration.txt` in `robot_ws/src/robot_controller/src/`
+Add Baxter's secret key and adress to `config.yaml` in `robot_ws/src/robot_controller/config/`
 
 ## 4.Start simulation
 
@@ -116,7 +113,7 @@ Click  __View on Gateway__ and that's all!
 
 [db1]: <https://youtu.be/AeufQmaNRWk>
 [db2]: <http://wiki.ros.org/melodic/Installation>
-[db3]: <https://dist.ipfs.io/go-ipfs/v0.4.22/go-ipfs_v0.4.22_linux-386.tar.gz>
+[db3]: <https://dist.ipfs.io/go-ipfs/v0.6.0/go-ipfs_v0.6.0_linux-386.tar.gz>
 [db4]: <https://github.com/airalab/robonomics/releases>
 [im1]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/empty_world.jpg>
 [im2]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/baxter_simulation.jpg>
