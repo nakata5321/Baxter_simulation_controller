@@ -1,21 +1,78 @@
 # Control Baxter robot with robonomics
 
-Example of how it works is available on [YouTube.][db1]
+Example of how it works:
+
+https://www.youtube.com/watch?v=JivTDhDJLHo
 
 ## Requirements:
 
  - ROS Melodic + Gazebo (installation manual [here][db2])  
  - extra packages:
-```sh
-sudo apt-get install ros-melodic-gazebo-ros-control ros-melodic-effort-controllers ros-melodic-joint-state-controller python3-rospkg rosbash
+```shell
+sudo apt-get install ros-melodic-gazebo-ros-control ros-melodic-effort-controllers ros-melodic-joint-state-controller python-catkin-tools python3-dev python3-catkin-pkg-modules python3-numpy python3-yaml ros-melodic-cv-bridge
 ```
 - IPFS up to 0.6.0 (download from [here][db3] and install)
 - python packages:
-```sh
-pip3 install -r requirements.txt
+```shell
+sudo apt-get -y install python3-pip
+pip3 install --upgrade pip
 ```
- - Robonomics node (binary file) (download latest [release][db4] here)
+ - Robonomics node download latest [release][db4] here (last tested release v1.1)
  - IPFS browser extension (not necessary)
+## 0. install CV Bridge extension for python3
+ 
+ - Create catkin workspace
+```shell
+mkdir -p catkin_workspace/src
+cd catkin_workspace
+catkin init
+```
+
+ - Instruct catkin to set cmake variables. Use your current version of `python`. For me, it is `python3.6`:
+```sh
+catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so
+catkin config --install
+```
+
+ - Clone cv_bridge src:
+```shell
+git clone https://github.com/ros-perception/vision_opencv.git src/vision_opencv
+```
+
+ - Find version of cv_bridge in your repository:
+```shell
+apt-cache show ros-melodic-cv-bridge | grep Version
+    Version: 1.12.8-0xenial-20180416-143935-0800
+```
+
+ - Checkout right version in git repo. In our case it is 1.12.8:
+```shell
+cd src/vision_opencv/
+git checkout 1.12.8
+cd ../../
+```
+
+ - Build:
+```shell
+catkin build cv_bridge
+```
+
+ - Extend environment with new package:
+
+```shell
+source install/setup.bash --extend
+``` 
+ - Test:
+```shell
+$ python3
+
+Python 3.6.9 (default, Jan 26 2021, 15:33:00) 
+[GCC 8.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from cv_bridge.boost.cv_bridge_boost import getCvType
+>>>
+```
+
 
 ## 1. Download simulation and controller packages
 Download packages:
@@ -26,10 +83,11 @@ cd robot_ws/src
 git clone https://github.com/nakata5321/Baxter_simulation_controller.git
 cd Baxter_simulation_controller
 git checkout old_version
+pip3 install -r requirements.txt
 cd ../..
 catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3
 ```
-Dont forget to add source command:
+Don't forget to add source command:
 ```sh
 echo "source /home/$USER/robot_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
@@ -46,7 +104,7 @@ Open one more window in terminal:
 ```sh
 rosrun gazebo_ros spawn_model -file `rospack find baxter_description`/urdf/baxter.urdf -urdf -z 1 -model baxter
 ```
-You can put some models in front of our baxter. It will be more intresting.
+You can put some models in front of our baxter. It will be more interesting.
 
 ![baxter][im2]
 
@@ -65,13 +123,16 @@ Go to [https://parachain.robonomics.network][db5] and switch to local node
 
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
-__Important!__ Copy each account's key and address (to copy address click on account's icon).You should change value from **Mnemonic** to **Raw seed** in second raw. It will be the private key for account.
+__Important!__ Copy each account's **Mnemonic** and **address** (to copy address click on account's icon). **Mnemonic** is the private key for account.
 Transfer some money (units) to these accounts:
 
 ![create account][im5]
+
+![create account2][im14]
+
 ![accounts][im6]
 
-Add Baxter's secret key and adress to `config.yaml` in `robot_ws/src/robot_controller/config/`
+Add Baxter's **Mnemonic** and **address** to `config.yaml` in `robot_ws/src/robot_controller/config/`
 
 ## 4.Start simulation
 
@@ -86,32 +147,30 @@ rosrun robot_controller robot_control.py
 ```
 ![waiting][im7]
 
-Return to the first terminal, open new window and send command to [**robonomics io**][db6]. This command will turn ON your robot:
-```sh
-echo "ON" | ./robonomics io write launch -r <BAXTER ADDRESS> -s <EMPLOYER’S KEY>
-```
-Where *<BAXTER ADDRESS>* and *<EMPLOYER’S KEY>* are replaced with previously saved strings accordingly
+Now you can send a transaction triggering the Baxter to start moving and collecting data. To do so, you can use the same portal [https://parachain.robonomics.network][db5]. Go to **Developer->Extrinsics** and select Baxter's employer account, `launch` extrinsic, Baxter's account as a target account and `yes` as a parameter. Submit the extrinsic.
+
 
 ![rob_message][im8]
 
+The robot should start moving. It won't accept commands from other accounts neither commands with `no` parameter.
 You should see the following:
 
 ![working][im9]
 
-when the work is over go to the Robonomics Portal to `Developer > Chain state`. Choose *datalog* in **state query** and add Baxter datalog message using "+" button.
+when the work is over go to the Robonomics Portal to `Developer > Chain state`. Choose *datalog.datalogItem(AccountId,u64)* in **state query**.If you want to show all datalog's, then turn off `include option` add view Baxter's datalog message using "+" button.
 
 ![datalog][im10]
 
-Now the IPFS hash of the telemetry and photos is saved in the blockchain. To see the data simply copy the hash and insert it in IPFS Companion:
+Now the IPFS hash of the telemetry and photos is saved in the blockchain. To see the data simply copy the hash and insert it in the search bar with URL: gateway.ipfs.io/ipfs/< put your hash here >
 
 ![ipfs][im11]
 
 Click  __View on Gateway__ and that's all!
 
 ![result1][im12]
+
 ![result2][im13]
 
-[db1]: <https://youtu.be/AeufQmaNRWk>
 [db2]: <http://wiki.ros.org/melodic/Installation>
 [db3]: <https://dist.ipfs.io/go-ipfs/v0.6.0/go-ipfs_v0.6.0_linux-386.tar.gz>
 [db4]: <https://github.com/airalab/robonomics/releases>
@@ -130,3 +189,4 @@ Click  __View on Gateway__ and that's all!
 [im11]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/ipfs.jpg>
 [im12]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result1.jpg>
 [im13]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/result2.jpg>
+[im14]: <https://github.com/nakata5321/Baxter_simulation_controller/blob/master/docs/images/create_account2.jpg>
