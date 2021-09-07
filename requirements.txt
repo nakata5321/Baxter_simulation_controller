@@ -1,0 +1,5 @@
+substrate_interface==0.13.9
+opencv-python
+ipfshttpclient==0.7.0
+PyYAML==5.4.1
+

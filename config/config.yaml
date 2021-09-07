@@ -1,2 +1,4 @@
-key : ""  #save here baxter private key
-address : "" #save here baxter address
+baxter_address : "" # save here baxter address
+baxter_mnemonic : "" # save here baxter private seed
+employer_address : "" # save here employer address
+node_address : "ws://127.0.0.1:9944"
