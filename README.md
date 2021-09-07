@@ -1,6 +1,9 @@
 # Control Baxter robot with robonomics
 
-Example of how it works is available on [YouTube.][db1]
+Example of how it works:
+
+https://youtu.be/2Dvuv0ZE2Bw
+
 
 ## Requirements:
 
@@ -109,7 +112,7 @@ catkin build
 ```
 Then return to first workspace and build it too:
 ```sh
-cd ../
+cd ~/Baxter_simulation_controller/
 catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3
 ```
 Don't forget to add source command:
@@ -214,7 +217,7 @@ That's all!
 ![result1][im12]
 ![result2][im13]
 
-[db1]: <https://youtu.be/2AQGFVzkGdg>
+
 [db2]: <http://wiki.ros.org/melodic/Installation>
 [db3]: <https://dist.ipfs.io/go-ipfs/v0.6.0/go-ipfs_v0.6.0_linux-386.tar.gz>
 [db4]: <https://github.com/airalab/robonomics/releases>
