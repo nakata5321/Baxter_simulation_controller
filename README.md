@@ -132,7 +132,7 @@ Transfer some money (units) to these accounts:
 
 ![accounts][im6]
 
-Add Baxter's **Mnemonic** and **address** to `config.yaml` in `robot_ws/src/robot_controller/config/`
+Add Baxter's **Mnemonic** and **address** to `config.yaml` in `robot_ws/src/Baxter_simulation_controller/config/`
 
 ## 4.Start simulation
 
